@@ -1,6 +1,7 @@
 export interface Product {
 
     //private ProductCategory category;
+    id : number;
     sku : string;
     name : string;
     description : string;
