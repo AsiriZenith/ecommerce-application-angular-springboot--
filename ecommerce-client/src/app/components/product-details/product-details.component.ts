@@ -11,7 +11,7 @@ import { ProductService } from "src/app/service/product.service";
 export class ProductDetailsComponent implements OnInit {
 
     product: Product = { id: 0, sku: '', name: '', description: '', unitPrice: 0, imageUrl: '', active: false, unitsInStock: 0, dateCreated: new Date(), lastUpdated: new Date() };
-    
+
     constructor(
         private productService: ProductService,
         private route: ActivatedRoute
