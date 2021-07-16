@@ -11,6 +11,7 @@ import { ProductDetailsComponent } from './components/product-details/product-de
 import { ProductCategoryMenuComponent } from './components/product-category-menu/product-category-menu.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CartStatusComponent } from './components/cart-status/cart-status.component';
+import { CartService } from './service/cart.service';
 
 const routes: Routes = [
   { path: 'products/:id', component: ProductDetailsComponent },
@@ -38,6 +39,7 @@ const routes: Routes = [
     NgbModule
   ],
   providers: [
+    CartService,
     ProductService
   ],
   bootstrap: [AppComponent]
