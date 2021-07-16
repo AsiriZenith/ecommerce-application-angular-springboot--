@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { SearchComponent } from './components/search/search.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 import { CartStatusComponent } from './components/cart-status/cart-status.component';
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'category/:id', component: ProductListComponent },
   { path: 'category', component: ProductListComponent },
   { path: 'products', component: ProductListComponent },
+  { path: 'checkout', component: CheckoutComponent },
   { path: '', redirectTo: '/products', pathMatch: 'full' },
   { path: '**', redirectTo: '/products', pathMatch: 'full' }
 ];
@@ -30,6 +32,7 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     SearchComponent,
+    CheckoutComponent,
     CartStatusComponent,
     CartDetailsComponent,
     ProductListComponent,
