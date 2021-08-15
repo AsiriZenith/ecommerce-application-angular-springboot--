@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
@@ -15,6 +16,7 @@ import { ProductCategoryMenuComponent } from './components/product-category-menu
 
 import { CartService } from './service/cart.service';
 import { ProductService } from './service/product.service';
+
 
 const routes: Routes = [
   { path: 'products/:id', component: ProductDetailsComponent },
@@ -43,7 +45,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     BrowserModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    ReactiveFormsModule
   ],
   providers: [
     CartService,
