@@ -16,6 +16,7 @@ import { ProductCategoryMenuComponent } from './components/product-category-menu
 
 import { CartService } from './service/cart.service';
 import { ProductService } from './service/product.service';
+import { ShopFormService } from './service/shop.form.service';
 
 
 const routes: Routes = [
@@ -50,7 +51,8 @@ const routes: Routes = [
   ],
   providers: [
     CartService,
-    ProductService
+    ProductService,
+    ShopFormService
   ],
   bootstrap: [AppComponent]
 })
