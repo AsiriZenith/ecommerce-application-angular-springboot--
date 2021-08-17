@@ -14,7 +14,7 @@ export class ShopFormService {
         // build an array for 'Month' dropdown list
         // start at current month and loop 
 
-        for (let theMonth = 0; theMonth < 12; theMonth++) {
+        for (let theMonth = startMonth; theMonth <= 12; theMonth++) {
             data.push(theMonth)
         }
 
