@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Country } from "src/app/commen/country";
+import { State } from "src/app/commen/state";
 import { ShopFormService } from "../../service/shop.form.service";
 
 @Component({
@@ -20,6 +21,8 @@ export class CheckoutComponent implements OnInit {
 
     countries: Country[] = []
 
+    shippingAddressState: State[] = []
+    billingAddressState: State[] = []
 
     constructor(
         private formBuilder: FormBuilder,
@@ -70,13 +73,13 @@ export class CheckoutComponent implements OnInit {
         )
 
         // populate credit card years
-
         this.shopFormService.getCreditCardYears().subscribe(
             data => {
                 console.log("Retrieved credit card years: " + JSON.stringify(data))
                 this.creditCardYears = data
             }
         )
+
         // populate contries
         this.shopFormService.getCountries().subscribe(
             data => {
@@ -90,14 +93,22 @@ export class CheckoutComponent implements OnInit {
         console.log("Handling the submit button")
         console.log(this.checkoutForm.get('customer')?.value)
         console.log("The email address is " + this.checkoutForm.get('customer')?.value.email)
+
+        console.log(this.checkoutForm.get('billingAddress').value.state.name)
     }
 
     copyShippingAddressToBillingAddress(e) {
         if (e.target.checked) {
             this.checkoutForm.controls.billingAddress
                 .setValue(this.checkoutForm.controls.shippingAddress.value)
+
+            // bug fix for states
+            this.billingAddressState = this.shippingAddressState
         } else {
             this.checkoutForm.controls.billingAddress.reset()
+
+            // bug fix for states
+            this.billingAddressState = []
         }
     }
 
@@ -121,6 +132,24 @@ export class CheckoutComponent implements OnInit {
             data => {
                 console.log("Retrieved credit card months: " + JSON.stringify(data))
                 this.creditCardMonths = data
+            }
+        )
+    }
+
+    getStates(formGroupName: string) {
+        const formGroup = this.checkoutForm.get(formGroupName)
+        const countrycode = formGroup.value.country.code
+
+        this.shopFormService.getStates(countrycode).subscribe(
+            data => {
+                if (formGroupName == 'billingAddress') {
+                    this.billingAddressState = data
+                } else {
+                    this.shippingAddressState = data
+                }
+
+                // select first item by default
+                formGroup.get('state').setValue(data[0])
             }
         )
     }
