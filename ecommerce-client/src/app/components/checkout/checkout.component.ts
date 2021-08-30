@@ -62,10 +62,11 @@ export class CheckoutComponent implements OnInit {
                     [Validators.required, Validators.minLength(2), WhiteSpaceValidator.notOnlyWhiteSpace]),
             }),
             creditCard: this.formBuilder.group({
-                cardType: [''],
-                nameOnCard: [''],
-                cardNumber: [''],
-                securityCode: [''],
+                cardType: new FormControl('', [Validators.required]),
+                nameOnCard: new FormControl('',
+                    [Validators.required, Validators.minLength(2), WhiteSpaceValidator.notOnlyWhiteSpace]),
+                cardNumber: new FormControl('', [Validators.required, Validators.pattern('[0-9]{16}')]),
+                securityCode: new FormControl('', [Validators.required, Validators.pattern('[0-9]{3}')]),
                 exipirationMonth: [''],
                 exipirationYear: ['']
             })
@@ -115,6 +116,11 @@ export class CheckoutComponent implements OnInit {
     get billingAddressStreet(): AbstractControl { return this.checkoutForm.get('billingAddress.street') }
     get billingAddressCountry(): AbstractControl { return this.checkoutForm.get('billingAddress.country') }
     get billingAddressZipCode(): AbstractControl { return this.checkoutForm.get('billingAddress.zipCode') }
+
+    get creditCardcardType(): AbstractControl { return this.checkoutForm.get('creditCard.cardType') }
+    get creditCardnameOnCard(): AbstractControl { return this.checkoutForm.get('creditCard.nameOnCard') }
+    get creditCardcardNumber(): AbstractControl { return this.checkoutForm.get('creditCard.cardNumber') }
+    get creditCardsecurityCode(): AbstractControl { return this.checkoutForm.get('creditCard.securityCode') }
 
     onSubmit() {
         if (this.checkoutForm.invalid) {
