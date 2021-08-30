@@ -52,11 +52,14 @@ export class CheckoutComponent implements OnInit {
                     [Validators.required, Validators.minLength(2), WhiteSpaceValidator.notOnlyWhiteSpace]),
             }),
             billingAddress: this.formBuilder.group({
-                street: [''],
-                city: [''],
-                state: [''],
-                country: [''],
-                zipCode: [''],
+                street: new FormControl('',
+                    [Validators.required, Validators.minLength(2), WhiteSpaceValidator.notOnlyWhiteSpace]),
+                city: new FormControl('',
+                    [Validators.required, Validators.minLength(2), WhiteSpaceValidator.notOnlyWhiteSpace]),
+                state: new FormControl('', [Validators.required]),
+                country: new FormControl('', [Validators.required]),
+                zipCode: new FormControl('',
+                    [Validators.required, Validators.minLength(2), WhiteSpaceValidator.notOnlyWhiteSpace]),
             }),
             creditCard: this.formBuilder.group({
                 cardType: [''],
@@ -106,6 +109,12 @@ export class CheckoutComponent implements OnInit {
     get shippingAddressStreet(): AbstractControl { return this.checkoutForm.get('shippingAddress.street') }
     get shippingAddressCountry(): AbstractControl { return this.checkoutForm.get('shippingAddress.country') }
     get shippingAddressZipCode(): AbstractControl { return this.checkoutForm.get('shippingAddress.zipCode') }
+
+    get billingAddressCity(): AbstractControl { return this.checkoutForm.get('billingAddress.city') }
+    get billingAddressstate(): AbstractControl { return this.checkoutForm.get('billingAddress.state') }
+    get billingAddressStreet(): AbstractControl { return this.checkoutForm.get('billingAddress.street') }
+    get billingAddressCountry(): AbstractControl { return this.checkoutForm.get('billingAddress.country') }
+    get billingAddressZipCode(): AbstractControl { return this.checkoutForm.get('billingAddress.zipCode') }
 
     onSubmit() {
         if (this.checkoutForm.invalid) {
