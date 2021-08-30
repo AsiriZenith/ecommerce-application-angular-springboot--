@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Country } from "src/app/commen/country";
-import { State } from "src/app/commen/state";
+import { WhiteSpaceValidator } from "../../validators/White.space.validator";
+import { Country } from "../../commen/country";
+import { State } from "../../commen/state";
 import { ShopFormService } from "../../service/shop.form.service";
 
 @Component({
@@ -32,18 +33,23 @@ export class CheckoutComponent implements OnInit {
     ngOnInit(): void {
         this.checkoutForm = this.formBuilder.group({
             customer: this.formBuilder.group({
-                firstName: new FormControl('', [Validators.required, Validators.minLength(2)]),
-                lastName: new FormControl('', [Validators.required, Validators.minLength(2)]),
+                firstName: new FormControl('',
+                    [Validators.required, Validators.minLength(2), WhiteSpaceValidator.notOnlyWhiteSpace]),
+                lastName: new FormControl('',
+                    [Validators.required, Validators.minLength(2), WhiteSpaceValidator.notOnlyWhiteSpace]),
                 email: new FormControl('',
                     [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]
                 )
             }),
             shippingAddress: this.formBuilder.group({
-                street: [''],
-                city: [''],
-                state: [''],
-                country: [''],
-                zipCode: [''],
+                street: new FormControl('',
+                    [Validators.required, Validators.minLength(2), WhiteSpaceValidator.notOnlyWhiteSpace]),
+                city: new FormControl('',
+                    [Validators.required, Validators.minLength(2), WhiteSpaceValidator.notOnlyWhiteSpace]),
+                state: new FormControl('', [Validators.required]),
+                country: new FormControl('', [Validators.required]),
+                zipCode: new FormControl('',
+                    [Validators.required, Validators.minLength(2), WhiteSpaceValidator.notOnlyWhiteSpace]),
             }),
             billingAddress: this.formBuilder.group({
                 street: [''],
@@ -94,6 +100,12 @@ export class CheckoutComponent implements OnInit {
     get firstName(): AbstractControl { return this.checkoutForm.get('customer.firstName') }
     get lastName(): AbstractControl { return this.checkoutForm.get('customer.lastName') }
     get email(): AbstractControl { return this.checkoutForm.get('customer.email') }
+
+    get shippingAddressCity(): AbstractControl { return this.checkoutForm.get('shippingAddress.city') }
+    get shippingAddressstate(): AbstractControl { return this.checkoutForm.get('shippingAddress.state') }
+    get shippingAddressStreet(): AbstractControl { return this.checkoutForm.get('shippingAddress.street') }
+    get shippingAddressCountry(): AbstractControl { return this.checkoutForm.get('shippingAddress.country') }
+    get shippingAddressZipCode(): AbstractControl { return this.checkoutForm.get('shippingAddress.zipCode') }
 
     onSubmit() {
         if (this.checkoutForm.invalid) {
