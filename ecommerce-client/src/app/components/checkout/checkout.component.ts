@@ -1,8 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { WhiteSpaceValidator } from "../../validators/White.space.validator";
-import { Country } from "../../commen/country";
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+
 import { State } from "../../commen/state";
+import { Country } from "../../commen/country";
+
+import { CartService } from "../../service/cart.service";
 import { ShopFormService } from "../../service/shop.form.service";
 
 @Component({
@@ -27,6 +30,7 @@ export class CheckoutComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
+        private cartService: CartService,
         private shopFormService: ShopFormService
     ) { }
 
@@ -73,7 +77,6 @@ export class CheckoutComponent implements OnInit {
         });
 
         // populate credit card months
-
         const startMonth: number = new Date().getMonth() + 1
         console.log("startMonth :" + startMonth)
 
@@ -99,6 +102,9 @@ export class CheckoutComponent implements OnInit {
                 this.countries = data
             }
         )
+
+        // call review cart details method
+        this.reviewCartDetails()
     }
 
     get firstName(): AbstractControl { return this.checkoutForm.get('customer.firstName') }
@@ -188,5 +194,18 @@ export class CheckoutComponent implements OnInit {
                 formGroup.get('state').setValue(data[0])
             }
         )
+    }
+
+    reviewCartDetails() {
+
+        // subscribe to cartService.totalQuantity 
+        this.cartService.totalQuantity.subscribe(data => {
+            this.totalQuantity = data
+        })
+
+        // subscribe to cartService.totalPrice
+        this.cartService.totalPrice.subscribe(data => {
+            this.totalPrice = data
+        })
     }
 }
