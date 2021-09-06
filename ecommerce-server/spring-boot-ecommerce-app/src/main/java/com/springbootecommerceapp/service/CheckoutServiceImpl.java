@@ -3,9 +3,14 @@ package com.springbootecommerceapp.service;
 import com.springbootecommerceapp.dao.CustomerRepository;
 import com.springbootecommerceapp.dto.Purchase;
 import com.springbootecommerceapp.dto.PurchaseResponse;
+import com.springbootecommerceapp.entity.Customer;
+import com.springbootecommerceapp.entity.Order;
+import com.springbootecommerceapp.entity.OrderItem;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class CheckoutServiceImpl implements CheckoutService{
@@ -21,24 +26,33 @@ public class CheckoutServiceImpl implements CheckoutService{
     public PurchaseResponse placeOrder(Purchase purchase) {
 
         // retrieve the order info from dto
-
+        Order order = purchase.getOrder();
 
         // generate tracking number
-
+        String orderTrackingNumber = generateOrderTrackingNumber();
+        order.setOrderTrackingNumber(orderTrackingNumber);
 
         // populate order with orderItem
-
+        Set<OrderItem> orderItems = purchase.getOrderItems();
+        orderItems.forEach(item -> order.add(item));
 
         // populate order with billingAddress and shippingAddress
-
+        order.setBillingAddress(purchase.getBillingAddress());
+        order.setShippingAddress(purchase.getShippingAddress());
 
         // populate customer with order
-
+        Customer customer = purchase.getCustomer();
+        customer.add(order);
 
         // save to the database
-
+        customerRepository.save(customer);
 
         // return a response
-        return null;
+        return new PurchaseResponse(orderTrackingNumber);
+    }
+
+    private String generateOrderTrackingNumber() {
+        // generate a random UUID number (UUID Version-4)
+        return UUID.randomUUID().toString();
     }
 }
