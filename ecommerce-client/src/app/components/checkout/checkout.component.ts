@@ -1,12 +1,16 @@
+import { Router } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
 import { WhiteSpaceValidator } from "../../validators/White.space.validator";
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 
 import { State } from "../../commen/state";
+import { Order } from "../../commen/order";
 import { Country } from "../../commen/country";
 
 import { CartService } from "../../service/cart.service";
+import { CheckoutService } from "../../service/checkout.service";
 import { ShopFormService } from "../../service/shop.form.service";
+import { OrderItem } from "src/app/commen/order-item";
 
 @Component({
     selector: 'app-checkout',
@@ -29,9 +33,11 @@ export class CheckoutComponent implements OnInit {
     billingAddressState: State[] = []
 
     constructor(
+        private router: Router,
         private formBuilder: FormBuilder,
         private cartService: CartService,
-        private shopFormService: ShopFormService
+        private shopFormService: ShopFormService,
+        private checkoutService: CheckoutService
     ) { }
 
     ngOnInit(): void {
@@ -131,12 +137,48 @@ export class CheckoutComponent implements OnInit {
     onSubmit() {
         if (this.checkoutForm.invalid) {
             this.checkoutForm.markAllAsTouched()
+            return
         }
-        console.log("Handling the submit button")
-        console.log(this.checkoutForm.get('customer')?.value)
-        console.log("The email address is " + this.checkoutForm.get('customer')?.value.email)
+        // console.log("Handling the submit button")
+        // console.log(this.checkoutForm.get('customer')?.value)
+        // console.log(this.checkoutForm.get('shippingAddress')?.value)
+        // console.log(this.checkoutForm.get('billingAddress')?.value)
+        // console.log(this.checkoutForm.get('creditCard')?.value)
 
-        console.log(this.checkoutForm.get('billingAddress').value.state.name)
+        // set up order
+        let order = new Order();
+        order.totalPrice = this.totalPrice
+        order.totalQuantity = this.totalQuantity
+
+        // get cart items
+        const cartItems = this.cartService.cartItems
+
+        // create orderItems from cartItems
+        // - long way
+        let orderItems: OrderItem[] = []
+        for (let i = 0; i < cartItems.length; i++) {
+            orderItems[i] = new OrderItem(cartItems[i])
+        }
+
+        // - short way
+        let orderItemsShort: OrderItem[] = cartItems.map(tempCartItem => new OrderItem(tempCartItem))
+        // set up perchase
+
+
+        // populate purchase - customer
+
+
+        // populate purchase - shipping address
+
+
+        // populate purchase - billing address
+
+
+        // populate purchase - order and orderItems
+
+
+        // call REST API via the CheckoutService
+
     }
 
     copyShippingAddressToBillingAddress(e) {

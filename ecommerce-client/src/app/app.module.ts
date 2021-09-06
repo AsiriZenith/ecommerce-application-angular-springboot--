@@ -16,8 +16,8 @@ import { ProductCategoryMenuComponent } from './components/product-category-menu
 
 import { CartService } from './service/cart.service';
 import { ProductService } from './service/product.service';
+import { CheckoutService } from './service/checkout.service';
 import { ShopFormService } from './service/shop.form.service';
-
 
 const routes: Routes = [
   { path: 'products/:id', component: ProductDetailsComponent },
@@ -52,6 +52,7 @@ const routes: Routes = [
   providers: [
     CartService,
     ProductService,
+    CheckoutService,
     ShopFormService
   ],
   bootstrap: [AppComponent]
