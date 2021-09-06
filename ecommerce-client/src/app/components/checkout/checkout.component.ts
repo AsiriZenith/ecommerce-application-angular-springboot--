@@ -6,11 +6,12 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import { State } from "../../commen/state";
 import { Order } from "../../commen/order";
 import { Country } from "../../commen/country";
+import { Purchase } from "../../commen/purchase";
+import { OrderItem } from "../../commen/order-item";
 
 import { CartService } from "../../service/cart.service";
 import { CheckoutService } from "../../service/checkout.service";
 import { ShopFormService } from "../../service/shop.form.service";
-import { OrderItem } from "src/app/commen/order-item";
 
 @Component({
     selector: 'app-checkout',
@@ -146,7 +147,7 @@ export class CheckoutComponent implements OnInit {
         // console.log(this.checkoutForm.get('creditCard')?.value)
 
         // set up order
-        let order = new Order();
+        let order = new Order()
         order.totalPrice = this.totalPrice
         order.totalQuantity = this.totalQuantity
 
@@ -154,31 +155,67 @@ export class CheckoutComponent implements OnInit {
         const cartItems = this.cartService.cartItems
 
         // create orderItems from cartItems
+        /*
         // - long way
         let orderItems: OrderItem[] = []
         for (let i = 0; i < cartItems.length; i++) {
             orderItems[i] = new OrderItem(cartItems[i])
         }
-
+        */
         // - short way
-        let orderItemsShort: OrderItem[] = cartItems.map(tempCartItem => new OrderItem(tempCartItem))
-        // set up perchase
+        let orderItems: OrderItem[] = cartItems.map(tempCartItem => new OrderItem(tempCartItem))
 
+        // set up perchase
+        let purchase = new Purchase()
 
         // populate purchase - customer
-
+        purchase.customer = this.checkoutForm.controls['customer'].value
 
         // populate purchase - shipping address
-
+        purchase.shippingAddress = this.checkoutForm.controls['shippingAddress'].value
+        const shippingState: State = JSON.parse(JSON.stringify(purchase.shippingAddress.state))
+        const shippingCountry: State = JSON.parse(JSON.stringify(purchase.shippingAddress.country))
+        purchase.shippingAddress.state = shippingState.name
+        purchase.shippingAddress.country = shippingCountry.name
 
         // populate purchase - billing address
-
+        purchase.billingAddress = this.checkoutForm.controls['billingAddress'].value
+        const billingState: State = JSON.parse(JSON.stringify(purchase.billingAddress.state))
+        const billingCountry: State = JSON.parse(JSON.stringify(purchase.billingAddress.country))
+        purchase.billingAddress.state = billingState.name
+        purchase.billingAddress.country = billingCountry.name
 
         // populate purchase - order and orderItems
+        purchase.order = order
+        purchase.orderItems = orderItems
 
+        console.log(purchase)
 
         // call REST API via the CheckoutService
+        this.checkoutService.placeOrder(purchase).subscribe({
+            next: res => {
+                alert(`Your order has been received.\nOrder tracking number: ${res.o}`)
 
+                // reset cart
+                this.resetCart()
+            },
+            error: err => {
+                alert(`There was an error: ${err.message}`)
+            }
+        })
+    }
+
+    resetCart() {
+        // reset cart data
+        this.cartService.cartItems=[]
+        this.cartService.totalPrice.next(0)
+        this.cartService.totalQuantity.next(0)
+
+        // reset form data
+        this.checkoutForm.reset()
+
+        // navigate back to the products page
+        this.router.navigateByUrl("/products")
     }
 
     copyShippingAddressToBillingAddress(e) {
