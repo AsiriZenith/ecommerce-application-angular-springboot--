@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
+import { LoginComponent } from './components/login/login.component';
 import { SearchComponent } from './components/search/search.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { CartStatusComponent } from './components/cart-status/cart-status.component';
@@ -34,6 +35,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
     SearchComponent,
     CheckoutComponent,
     CartStatusComponent,
