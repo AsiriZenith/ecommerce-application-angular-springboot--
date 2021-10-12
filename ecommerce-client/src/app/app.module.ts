@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Router, RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
-import { OKTA_CONFIG, OktaAuthModule, OktaCallbackComponent } from '@okta/okta-angular';
+import { Router, RouterModule, Routes } from '@angular/router';
+import { OKTA_CONFIG, OktaAuthModule, OktaCallbackComponent, OktaAuthGuard } from '@okta/okta-angular';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -14,6 +14,7 @@ import { CartStatusComponent } from './components/cart-status/cart-status.compon
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { LoginStatusComponent } from './components/login-status/login-status.component';
+import { MembersPageComponent } from './components/members-page/members-page.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { ProductCategoryMenuComponent } from './components/product-category-menu/product-category-menu.component';
 
@@ -25,7 +26,7 @@ import { ShopFormService } from './service/shop.form.service';
 import myAppConfig from './config/my-app-config';
 
 const oktaConfig = Object.assign({
-  onAuthRequired: (injector) => {
+  onAuthRequired: (_oktaAuth, injector: { get: (arg0: typeof Router) => any; }) => {
     const router = injector.get(Router)
 
     // redirect the user to your custom login page
@@ -35,6 +36,7 @@ const oktaConfig = Object.assign({
 
 const routes: Routes = [
   { path: 'login/callback', component: OktaCallbackComponent },
+  { path: 'members', component: MembersPageComponent, canActivate: [OktaAuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'products/:id', component: ProductDetailsComponent },
   { path: 'cart-details', component: CartDetailsComponent },
@@ -57,6 +59,7 @@ const routes: Routes = [
     LoginStatusComponent,
     CartDetailsComponent,
     ProductListComponent,
+    MembersPageComponent,
     ProductDetailsComponent,
     ProductCategoryMenuComponent
   ],
