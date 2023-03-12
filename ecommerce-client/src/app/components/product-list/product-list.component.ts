@@ -18,7 +18,7 @@ export class ProductListComponent implements OnInit {
 
   // new properties for pagination
   thePageNumber: number = 1;
-  thePageSize: number = 10;
+  thePageSize: number = 8;
   theTotalElements: number = 0;
 
   previousKeyword: string | null = '';
@@ -57,7 +57,7 @@ export class ProductListComponent implements OnInit {
     }
     this.previousKeyword = theKeyword;
 
-    console.log(`keyword=${theKeyword}, thePageNumber=${this.thePageNumber}`);
+    // console.log(`keyword=${theKeyword}, thePageNumber=${this.thePageNumber}`);
 
     const theKeyword_string = (theKeyword) ? theKeyword : "";
     // now search for the products using keyword
@@ -90,7 +90,7 @@ export class ProductListComponent implements OnInit {
     }
     this.previousCategoryId = this.currentCategoryId;
 
-    console.log(`current Category Id = ${this.currentCategoryId}, the Page Number = ${this.thePageNumber}`);
+    // console.log(`current Category Id = ${this.currentCategoryId}, the Page Number = ${this.thePageNumber}`);
 
     // now get the products for the given category id
     this.productService.getProductListPaginate(
@@ -107,15 +107,14 @@ export class ProductListComponent implements OnInit {
     };
   }
 
-  updatePageSize(e: Event) {
-    console.log(e);
-    // this.thePageSize = pageSize;
-    // this.thePageNumber = 1;
-    // this.listProducts();
+  updatePageSize(e: any) {
+    this.thePageSize = e.target.value;
+    this.thePageNumber = 1;
+    this.listProducts();
   }
 
   addToCart(theProduct: Product) {
-    console.log(`Adding to cart: ${theProduct.name}, ${theProduct.unitPrice}`);
+    // console.log(`Adding to cart: ${theProduct.name}, ${theProduct.unitPrice}`);
 
     const theCartItem = new CartItem(theProduct);
     this.cartservice.addToCart(theCartItem);
