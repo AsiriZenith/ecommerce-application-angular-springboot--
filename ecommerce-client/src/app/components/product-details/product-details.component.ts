@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { CartItem } from "src/app/commen/cart-item";
-import { Product } from "src/app/commen/product";
-import { ProductCategory } from "src/app/commen/product-category";
-import { CartService } from "src/app/service/cart.service";
-import { ConstantsService } from "src/app/service/const.service";
-import { ProductService } from "src/app/service/product.service";
+import { CartItem } from "../../commen/cart-item";
+import { Product } from "../../commen/product";
+import { ProductCategory } from "../../commen/product-category";
+import { CartService } from "../../service/cart.service";
+import { ConstantsService } from "../../service/const.service";
+import { ProductService } from "../../service/product.service";
 
 @Component({
     selector: 'product-details',
@@ -50,6 +50,7 @@ export class ProductDetailsComponent implements OnInit {
 
     /* get selected category type */
     getSelectedCategory(sku: string) {
+      // this.currentSelectedCategory = this.constantsService.CATEGORY_ITEMS.find((item) => sku.includes(item.categoryName));
       this.constantsService.CATEGORY_ITEMS.find((item) => {
         if (sku.includes(item.categoryName)) {
           this.currentSelectedCategory = item;
