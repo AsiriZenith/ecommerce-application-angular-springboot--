@@ -36,7 +36,7 @@ const oktaConfig = Object.assign({
 
 const routes: Routes = [
   { path: 'login/callback', component: OktaCallbackComponent },
-  { path: 'members', component: MembersPageComponent, canActivate: [OktaAuthGuard] },
+  { path: 'members', component: MembersPageComponent, canActivate: [OktaAuthGuard]},
   { path: 'login', component: LoginComponent },
   { path: 'products/:id', component: ProductDetailsComponent },
   { path: 'cart-details', component: CartDetailsComponent },
