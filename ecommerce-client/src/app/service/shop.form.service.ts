@@ -4,14 +4,15 @@ import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
 import { Country } from "../commen/country";
 import { State } from "../commen/state";
+import { environment } from "../../environments/environment";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ShopFormService {
 
-    private countriesUrl = 'http://localhost:8088/api/countries'
-    private statesUrl = 'http://localhost:8088/api/states'
+    private countriesUrl = `${environment.baseUrl}/countries`;
+    private statesUrl = `${environment.baseUrl}/states`;
 
     constructor(private httpClient: HttpClient) { }
 
@@ -34,7 +35,7 @@ export class ShopFormService {
         let data: number[] = []
 
         // build an array for 'Month' dropdown list
-        // start at current month and loop 
+        // start at current month and loop
 
         for (let theMonth = startMonth; theMonth <= 12; theMonth++) {
             data.push(theMonth)
@@ -47,7 +48,7 @@ export class ShopFormService {
         let data: number[] = []
 
         // build an array for 'Month' dropdown list
-        // start at current month and loop 
+        // start at current month and loop
 
         const startYear: number = new Date().getFullYear()
         const endYear: number = startYear + 10

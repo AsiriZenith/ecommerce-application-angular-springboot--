@@ -3,13 +3,14 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 import { Purchase } from "../commen/purchase";
+import { environment } from "../../environments/environment";
 
 @Injectable({
     providedIn: 'root'
 })
 export class CheckoutService {
 
-    private purchaseUrl = 'http://localhost:8088/api/checkout/purchase'
+    private purchaseUrl = `${environment.baseUrl}/checkout/purchase`;
 
     constructor(private httpClient: HttpClient) { }
 
